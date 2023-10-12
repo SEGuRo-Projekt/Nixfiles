@@ -1,6 +1,4 @@
-{ config, ... }:
-
-{
+{config, ...}: {
   users.users = rec {
     stv0g = {
       isNormalUser = true;
@@ -28,4 +26,6 @@
 
     root.openssh.authorizedKeys.keys = stv0g.openssh.authorizedKeys.keys;
   };
+
+  nix.settings.trusted-users = ["root" "pjungkamp" "stv0g"];
 }

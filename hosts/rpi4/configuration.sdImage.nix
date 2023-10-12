@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
 {
-
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     <nixpkgs/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix>
     <nixos-hardware/raspberry-pi/4>
@@ -14,7 +17,7 @@
     # modprobe: FATAL: Module sun4i-drm not found in directory
     (final: super: {
       makeModulesClosure = x:
-        super.makeModulesClosure (x // { allowMissing = true; });
+        super.makeModulesClosure (x // {allowMissing = true;});
     })
   ];
 
@@ -29,16 +32,19 @@
   environment.systemPackages = with pkgs; [
     libraspberrypi
     raspberrypi-eeprom
-    curl nano nftables python3
+    curl
+    nano
+    nftables
+    python3
   ];
 
   sdImage.compressImage = false;
 
   services.openssh = {
-      enable = true;
-      settings = {
-        PermitRootLogin = "yes";
-      };
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+    };
   };
 
   networking.firewall.enable = false;

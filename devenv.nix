@@ -1,4 +1,6 @@
-{...}: {
+{lib, ...}: {
+  containers = lib.mkForce {};
+
   enterShell = ''
     # enter the users default shell if interactive
     [ -z "$PS1" ] || exec "$SHELL"

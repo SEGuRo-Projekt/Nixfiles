@@ -7,10 +7,7 @@
     devenv.url = "github:cachix/devenv";
 
     # raspberry pi hardware support
-    nixos-hardware = {
-      url = "github:NixOS/nixos-hardware";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     # generate qcow2 images for a NixOS configuration
     nixos-generators = {
@@ -26,10 +23,16 @@
   };
 
   outputs = inputs @ {
-    flake-parts,
     devenv,
+    flake-parts,
+    nixpkgs,
     ...
-  }:
+  }: let
+    inherit (builtins) attrNames readDir;
+    inherit (nixpkgs.lib) genAttrs filterAttrs;
+    dirEntries = path: attrNames (filterAttrs (n: v: v == "directory") (readDir path));
+    forDirEntries = path: f: genAttrs (dirEntries path) f;
+  in
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
       imports = [devenv.flakeModule];
@@ -38,6 +41,18 @@
         devenv.shells.default.imports = [./devenv.nix];
       };
       flake = {
+        nixosModules = let
+          dir = ./nixosModules;
+          modules = forDirEntries dir (name: import "${dir}/${name}");
+        in
+          modules;
+
+        nixosConfigurations = let
+          inherit (nixpkgs.lib) nixosSystem;
+          dir = ./nixosConfigurations;
+          configurations = forDirEntries dir (name: nixosSystem (import "${dir}/${name}" inputs));
+        in
+          configurations;
       };
     };
 }
