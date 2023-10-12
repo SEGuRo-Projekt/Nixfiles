@@ -2,7 +2,7 @@
   description = "The SEGuRo project flake";
 
   inputs = {
-    nixpkgs.url = "github:nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devenv.url = "github:cachix/devenv";
 
@@ -25,20 +25,19 @@
     };
   };
 
-  outputs = inputs@{flake-parts, devenv, ...}:
-    flake-parts.mkFlake {inherit inputs;} {
+  outputs = inputs @ {
+    flake-parts,
+    devenv,
+    ...
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
-
-      imports = [
-        devenv.flakeModule
-      ];
-
+      imports = [devenv.flakeModule];
       perSystem = {pkgs, ...}: {
-        formatter = pkgs
+        formatter = pkgs.alejandra;
+        devenv.shells.default.imports = [./devenv.nix];
       };
-
       flake = {
-        
-      }
+      };
     };
 }
