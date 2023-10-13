@@ -8,7 +8,11 @@
   imports = with self.nixosModules; [
     ./hardware-configuration.nix
     users
+    nix
+    auto-update
   ];
+
+  seguro.auto-update.enable = true;
 
   networking = {
     hostName = "remote-store";
@@ -28,8 +32,6 @@
     # Or disable the firewall altogether.
     # firewall.enable = false;
   };
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   time.timeZone = "Europe/Berlin";
 
@@ -60,18 +62,4 @@
       dnssec = "false";
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    kakoune
-    rage
-    wget
-  ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 }

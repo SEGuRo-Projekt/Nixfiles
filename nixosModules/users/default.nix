@@ -1,8 +1,11 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   users.users = rec {
     stv0g = {
       isNormalUser = true;
-
       extraGroups = ["wheel"];
       uid = 2001;
 
@@ -14,7 +17,6 @@
 
     pjungkamp = {
       isNormalUser = true;
-
       extraGroups = ["wheel"];
       uid = 2000;
 
@@ -22,6 +24,8 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJRMBo9UQsT10jjtT+cjE3coDecX3oIoHCMCyHlg1r5V pjungkamp@GER-L-00005"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK5ypxwGHqA1bHjzNNv4aaYT1P8Bq1s4HRIXIWN27FWz pjungkamp@yoga9"
       ];
+
+      packages = with pkgs; [kakoune];
     };
 
     root.openssh.authorizedKeys.keys = stv0g.openssh.authorizedKeys.keys;

@@ -43,14 +43,14 @@
       flake = {
         nixosModules = let
           dir = ./nixosModules;
-          modules = forDirEntries dir (name: import "${dir}/${name}");
+          modules = forDirEntries dir (name: import (dir + "/${name}"));
         in
           modules;
 
         nixosConfigurations = let
           inherit (nixpkgs.lib) nixosSystem;
           dir = ./nixosConfigurations;
-          configurations = forDirEntries dir (name: nixosSystem (import "${dir}/${name}" inputs));
+          configurations = forDirEntries dir (name: nixosSystem (import (dir + "/${name}") inputs));
         in
           configurations;
       };
