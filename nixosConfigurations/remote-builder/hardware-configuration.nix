@@ -1,12 +1,13 @@
 {
   lib,
+  nixpkgs,
   self,
   ...
 }: {
   imports = [(nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")];
 
   boot = {
-    cleanTmpDir = true;
+    tmp.cleanOnBoot = true;
     initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];
     loader = {
       grub = {

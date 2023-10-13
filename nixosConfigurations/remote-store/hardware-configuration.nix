@@ -1,12 +1,13 @@
 {
   lib,
+  nixpkgs,
   self,
   ...
 }: {
   imports = [(nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")];
 
   boot = {
-    cleanTmpDir = true;
+    tmp.cleanOnBoot = true;
     initrd.availableKernelModules = ["ahci" "xhci_pci" "virtio_pci" "virtio_scsi" "sr_mod" "virtio_blk"];
     kernelModules = ["kvm-intel"];
     loader = {
@@ -17,11 +18,11 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/vda2";
+      device = "/dev/disk/by-uuid/f855068a-bc30-4a35-ab92-0476e5a7bb54";
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/vda1";
+      device = "/dev/disk/by-uuid/D451-3135";
       fsType = "vfat";
     };
   };

@@ -2,6 +2,7 @@
   config,
   nixosModules,
   pkgs,
+  self,
   ...
 }: {
   imports = with self.nixosModules; [
