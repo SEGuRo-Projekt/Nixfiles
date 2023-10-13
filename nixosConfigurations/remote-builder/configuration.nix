@@ -15,7 +15,7 @@
   seguro.auto-update.enable = true;
 
   networking = {
-    hostName = "remote-store";
+    hostName = "remote-builder";
     useDHCP = true;
 
     # Pick only one of the below networking options.
