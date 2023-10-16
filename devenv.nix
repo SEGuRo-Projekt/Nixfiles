@@ -8,6 +8,7 @@
 
   packages = with pkgs; [
     agenix.packages.${pkgs.system}.default
+    mkpasswd
     rage
   ];
 
