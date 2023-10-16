@@ -22,4 +22,5 @@ let
 in {
   "password-pjungkamp.age".publicKeys = allSystemKeys ++ userKeys.pjungkamp;
   "password-svogel.age".publicKeys = allSystemKeys ++ userKeys.svogel;
+  "s3-nixcache.age".publicKeys = allSystemKeys ++ allUserKeys;
 }
