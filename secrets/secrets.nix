@@ -21,4 +21,5 @@ let
   allSystemKeys = attrValues systemKey;
 in {
   "password-pjungkamp.age".publicKeys = allSystemKeys ++ userKeys.pjungkamp;
+  "password-svogel.age".publicKeys = allSystemKeys ++ userKeys.svogel;
 }
