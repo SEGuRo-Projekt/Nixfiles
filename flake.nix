@@ -29,9 +29,13 @@
     ...
   }: let
     inherit (builtins) attrNames readDir;
-    inherit (nixpkgs.lib) genAttrs filterAttrs;
-    dirEntries = path: attrNames (filterAttrs (n: v: v == "directory") (readDir path));
-    forDirEntries = path: f: genAttrs (dirEntries path) f;
+    inherit (nixpkgs.lib) filterAttrs mapAttrs;
+
+    dirEntries = path: let
+      toPath = n: v: path + "/${n}";
+    in
+      mapAttrs toPath (readDir path);
+    forDirEntries = path: f: mapAttrs f (dirEntries path);
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
@@ -43,16 +47,24 @@
       flake = {
         nixosModules = let
           dir = ./nixosModules;
-          modules = forDirEntries dir (name: import (dir + "/${name}"));
+          mkNixosModule = name: path: import path;
         in
-          modules;
+          forDirEntries dir mkNixosModule;
 
         nixosConfigurations = let
-          inherit (nixpkgs.lib) nixosSystem;
           dir = ./nixosConfigurations;
-          configurations = forDirEntries dir (name: nixosSystem (import (dir + "/${name}") inputs));
+          parse = hostname: {
+            system,
+            modules,
+          }: {
+            inherit system modules;
+            specialArgs = inputs // {inherit hostname;};
+          };
+          mkNixosConfiguration = name: path:
+            nixpkgs.lib.nixosSystem
+            (parse name (import path));
         in
-          configurations;
+          forDirEntries dir mkNixosConfiguration;
       };
     };
 }
