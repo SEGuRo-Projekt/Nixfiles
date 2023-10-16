@@ -1,4 +1,5 @@
 {
+  self,
   config,
   pkgs,
   ...
@@ -19,6 +20,7 @@
       isNormalUser = true;
       extraGroups = ["wheel"];
       uid = 2000;
+      passwordFile = config.age.secrets."password-pjungkamp".path;
 
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJRMBo9UQsT10jjtT+cjE3coDecX3oIoHCMCyHlg1r5V pjungkamp@GER-L-00005"
@@ -29,6 +31,10 @@
     };
 
     root.openssh.authorizedKeys.keys = stv0g.openssh.authorizedKeys.keys;
+  };
+
+  age.secrets = {
+    "password-pjungkamp".file = self.secrets."password-pjungkamp.age";
   };
 
   nix.settings.trusted-users = ["root" "pjungkamp" "stv0g"];

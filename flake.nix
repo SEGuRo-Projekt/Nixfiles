@@ -65,6 +65,8 @@
             (parse name (import path));
         in
           forDirEntries dir mkNixosConfiguration;
+
+        secrets = dirEntries ./secrets;
       };
     };
 }

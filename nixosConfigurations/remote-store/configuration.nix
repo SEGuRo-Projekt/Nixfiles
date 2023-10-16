@@ -7,9 +7,10 @@
 }: {
   imports = with self.nixosModules; [
     ./hardware-configuration.nix
-    users
-    nix
     auto-update
+    nix
+    secrets
+    users
   ];
 
   seguro.auto-update.enable = true;

@@ -1,13 +1,20 @@
-{lib, ...}: {
+{
+  lib,
+  pkgs,
+  agenix,
+  ...
+}: {
   containers = lib.mkForce {};
+
+  packages = with pkgs; [
+    agenix.packages.${pkgs.system}.default
+    rage
+  ];
 
   enterShell = ''
     # enter the users default shell if interactive
     [ -z "$PS1" ] || exec "$SHELL"
   '';
-
-  env = {
-  };
 
   pre-commit.hooks = {
     alejandra.enable = true;
