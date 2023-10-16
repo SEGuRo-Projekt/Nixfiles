@@ -94,7 +94,7 @@ specifies which public keys should be able to decrypt it:
 
 ```nix
   ...
-  "my-new-secret.age".publicKeys = allSystems ++ userKeys.my-user;
+  "my-new-secret.age".publicKeys = allSystemKeys ++ userKeys.my-user;
 ```
 
 See the [secrets.nix section](#the-secretsnix-file) above for information about
