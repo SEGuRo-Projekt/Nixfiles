@@ -6,6 +6,9 @@ let
     pjungkamp = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK5ypxwGHqA1bHjzNNv4aaYT1P8Bq1s4HRIXIWN27FWz pjungkamp@yoga9"
     ];
+    svogel = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8xvUHFUCPxrcZNiP5W/+VG3Aalsdwo8i6Q+oKaGEGz stv0g@cam.0l.de"
+    ];
   };
 
   # Add the unique public key for a machine here.
