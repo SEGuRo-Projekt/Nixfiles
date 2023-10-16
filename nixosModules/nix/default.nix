@@ -15,28 +15,21 @@ in {
     settings = {
       experimental-features = ["nix-command" "flakes"];
 
-      substitutors = [
+      substituters = [
         "s3://nixcache?profile=default&scheme=https&endpoint=s4.0l.de"
       ];
-
-      buildMachines = [
-        {
-          hostName = "oci.0l.de";
-          system = "aarch64-linux";
-          protocol = "ssh-ng";
-
-          # if the builder supports building for multiple architectures,
-          # replace the previous line by, e.g.,
-          # systems = ["x86_64-linux" "aarch64-linux"];
-
-          maxJobs = 4;
-          speedFactor = 2;
-
-          # supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-          mandatoryFeatures = [];
-        }
-      ];
     };
+
+    buildMachines = [
+      {
+        hostName = "oci.0l.de";
+        system = "aarch64-linux";
+        protocol = "ssh-ng";
+        maxJobs = 4;
+        speedFactor = 2;
+        mandatoryFeatures = [];
+      }
+    ];
 
     distributedBuilds = true;
 
