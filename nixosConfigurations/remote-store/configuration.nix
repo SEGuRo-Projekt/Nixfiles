@@ -6,7 +6,6 @@
   ...
 }: {
   imports = with self.nixosModules; [
-    ./hardware-configuration.nix
     auto-update
     nix
     secrets
