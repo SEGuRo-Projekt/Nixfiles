@@ -9,17 +9,14 @@
     # raspberry pi hardware support
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    # generate qcow2 images for a NixOS configuration
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # store encrypted secrets in git
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # selectively persist files while mounting "/" on tmpfs
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs = inputs @ {
@@ -43,6 +40,7 @@
       perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;
         devenv.shells.default.imports = [./devenv.nix];
+        legacyPackages = pkgs;
       };
       flake = {
         nixosModules = let
