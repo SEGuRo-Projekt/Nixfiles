@@ -3,13 +3,17 @@
   pkgs,
   agenix,
   ...
-}: {
+}: let
+  agenixWithAge = agenix.packages.${pkgs.system}.default.override {
+    ageBin = lib.getExe pkgs.age;
+  };
+in {
   containers = lib.mkForce {};
 
   packages = with pkgs; [
-    agenix.packages.${pkgs.system}.default
+    age
+    agenixWithAge
     mkpasswd
-    rage
   ];
 
   enterShell = ''
