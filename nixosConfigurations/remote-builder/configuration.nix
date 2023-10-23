@@ -14,13 +14,28 @@
 
   seguro.auto-update.enable = true;
 
-  nix.extraOptions = ''
-    secret-key-files = /var/lib/keys/cache.key
-  '';
-
   networking = {
     hostName = "remote-builder";
     useDHCP = true;
+  };
+
+  users = {
+    groups.nixremote = {};
+    users.nixremote = {
+      isSystemUser = true;
+      useDefaultShell = true;
+      group = "nixremote";
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOdVp2uN/50APLmPWBjdfzkTHzeFbyr7GZYWWaDz1Lrn root@yoga9"
+      ];
+    };
+  };
+
+  nix = {
+    settings.trusted-users = ["nixremote"];
+    extraOptions = ''
+      secret-key-files = /var/lib/keys/cache.key
+    '';
   };
 
   time.timeZone = "Europe/Berlin";
